@@ -23,6 +23,8 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().hide();
         IniciarComponentes();
 
+        UsuarioDAO usuario_dao = new UsuarioDAO(this);
+
         text_tela_cadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,8 +50,13 @@ public class Login extends AppCompatActivity {
                     edit_Senha.setError("Senha é necessária para continuar");
                 }
                 else {
-                    Intent Principal = new Intent(Login.this, com.example.myapplication.Principal.class);
-                    startActivity(Principal);
+                    boolean logar = usuario_dao.select(usuario, senha);
+                    if(logar){
+                        Intent Principal = new Intent(Login.this, com.example.myapplication.Principal.class);
+                        startActivity(Principal);
+                    }else{
+                        edit_Senha.setError("Senha ou Email Inválidos!");
+                    }
                 }
             }
         });
